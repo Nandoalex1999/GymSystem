@@ -75,17 +75,18 @@
 
 
         <!-- Alimentación -->
-        <div class="bg-gray-900 rounded-xl p-6 border border-gray-700 opacity-70 cursor-not-allowed">
+<a href="{{ route('alimentacion.index') }}"
+   class="bg-gray-900 rounded-xl p-6 border border-red-600 hover:bg-gray-800 hover:scale-105 transition duration-300">
 
-            <h2 class="text-red-500 font-bold text-xl">
-                🍽️ Alimentación
-            </h2>
+    <h2 class="text-red-500 font-bold text-xl">
+        🍽️ Alimentación
+    </h2>
 
-            <p class="mt-3 text-gray-400">
-                Próximamente.
-            </p>
+    <p class="mt-3 text-gray-400">
+        Gestionar planes alimenticios.
+    </p>
 
-        </div>
+</a>
 
 
         <!-- Reportes -->
