@@ -24,13 +24,21 @@
         <table class="w-full text-left">
 
             <thead class="bg-gray-900 text-red-500">
+
                 <tr>
+
                     <th class="p-4">ID</th>
+
                     <th class="p-4">Nombre</th>
+
                     <th class="p-4">Grupo Muscular</th>
+
                     <th class="p-4">Descripción</th>
+
                     <th class="p-4">Acciones</th>
+
                 </tr>
+
             </thead>
 
             <tbody>
@@ -39,35 +47,54 @@
 
                 <tr class="border-b border-gray-800">
 
-                    <td class="p-4">{{ $ejercicio->id }}</td>
-                    <td class="p-4">{{ $ejercicio->nombre }}</td>
-                    <td class="p-4">{{ $ejercicio->grupo_muscular }}</td>
-                    <td class="p-4">{{ $ejercicio->descripcion }}</td>
+                    <td class="p-4">
+                        {{ $ejercicio->id }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ $ejercicio->nombre }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ $ejercicio->grupo_muscular }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ $ejercicio->descripcion }}
+                    </td>
 
                     <td class="p-4">
 
-                        <a href="{{ route('ejercicios.edit', $ejercicio) }}"
-   class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
-    Editar
-</a>
+                        <div class="flex items-center gap-2">
 
-                        <form action="{{ route('ejercicios.destroy', $ejercicio) }}"
-      method="POST"
-      class="inline"
-      onsubmit="return confirm('¿Está seguro de eliminar este ejercicio?')">
+                            {{-- Botón Editar --}}
+                            <a href="{{ route('ejercicios.edit', $ejercicio) }}"
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg">
 
-    @csrf
-    @method('DELETE')
+                                Editar
 
-    <button
-        type="submit"
-        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded ml-2">
+                            </a>
 
-        Eliminar
+                            {{-- Botón Eliminar --}}
+                            <form action="{{ route('ejercicios.destroy', $ejercicio) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('¿Está seguro de eliminar este ejercicio?')">
 
-    </button>
+                                @csrf
 
-</form>
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg">
+
+                                    Eliminar
+
+                                </button>
+
+                            </form>
+
+                        </div>
 
                     </td>
 
@@ -76,9 +103,13 @@
             @empty
 
                 <tr>
+
                     <td colspan="5" class="text-center p-6">
+
                         No existen ejercicios registrados.
+
                     </td>
+
                 </tr>
 
             @endforelse

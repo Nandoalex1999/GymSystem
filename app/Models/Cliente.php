@@ -20,4 +20,9 @@ class Cliente extends Model
         'objetivo',
         'estado',
     ];
+
+    public function alimentaciones()
+    {
+        return $this->hasMany(Alimentacion::class);
+    }
 }

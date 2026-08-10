@@ -24,13 +24,21 @@
         <table class="w-full text-left">
 
             <thead class="bg-gray-900 text-red-500">
+
                 <tr>
+
                     <th class="p-4">ID</th>
+
                     <th class="p-4">Nombre</th>
+
                     <th class="p-4">Email</th>
+
                     <th class="p-4">Rol</th>
+
                     <th class="p-4">Acciones</th>
+
                 </tr>
+
             </thead>
 
             <tbody>
@@ -39,46 +47,69 @@
 
                 <tr class="border-b border-gray-800">
 
-                    <td class="p-4">{{ $usuario->id }}</td>
-                    <td class="p-4">{{ $usuario->name }}</td>
-                    <td class="p-4">{{ $usuario->email }}</td>
-                    <td class="p-4">{{ $usuario->role->nombre ?? 'Sin rol' }}</td>
+                    <td class="p-4">
+                        {{ $usuario->id }}
+                    </td>
 
-                   <td class="p-4">
+                    <td class="p-4">
+                        {{ $usuario->name }}
+                    </td>
 
-    <a href="{{ route('usuarios.edit', $usuario) }}"
-       class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
-        Editar
-    </a>
+                    <td class="p-4">
+                        {{ $usuario->email }}
+                    </td>
 
-    <form action="{{ route('usuarios.destroy', $usuario) }}"
-      method="POST"
-      class="inline"
-      onsubmit="return confirm('¿Está seguro de eliminar este usuario?')">
+                    <td class="p-4">
+                        {{ $usuario->role->nombre ?? 'Sin rol' }}
+                    </td>
 
-    @csrf
-    @method('DELETE')
+                    <td class="p-4">
 
-    <button
-        type="submit"
-        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded ml-2">
+                        <div class="flex items-center gap-2">
 
-        Eliminar
+                            {{-- Botón Editar --}}
+                            <a href="{{ route('usuarios.edit', $usuario) }}"
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg">
 
-    </button>
+                                Editar
 
-</form>
+                            </a>
 
-</td>
+                            {{-- Botón Eliminar --}}
+                            <form action="{{ route('usuarios.destroy', $usuario) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('¿Está seguro de eliminar este usuario?')">
+
+                                @csrf
+
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg">
+
+                                    Eliminar
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
 
                 </tr>
 
             @empty
 
                 <tr>
+
                     <td colspan="5" class="text-center p-6">
+
                         No existen usuarios registrados.
+
                     </td>
+
                 </tr>
 
             @endforelse

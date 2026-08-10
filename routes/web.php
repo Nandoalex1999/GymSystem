@@ -6,27 +6,81 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\RutinaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\AlimentacionController;
 use Illuminate\Support\Facades\Route;
+
+
+/*
+|--------------------------------------------------------------------------
+| Página principal
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
+/*
+|--------------------------------------------------------------------------
+| Usuarios
+|--------------------------------------------------------------------------
+*/
+
 Route::resource('usuarios', UserController::class)
     ->middleware(['auth', 'verified']);
+
+
+/*
+|--------------------------------------------------------------------------
+| Ejercicios
+|--------------------------------------------------------------------------
+*/
 
 Route::resource('ejercicios', EjercicioController::class)
     ->middleware(['auth', 'verified']);
 
+
+/*
+|--------------------------------------------------------------------------
+| Rutinas
+|--------------------------------------------------------------------------
+*/
+
 Route::resource('rutinas', RutinaController::class)
     ->middleware(['auth', 'verified']);
 
+
+/*
+|--------------------------------------------------------------------------
+| Clientes
+|--------------------------------------------------------------------------
+*/
+
 Route::resource('clientes', ClienteController::class)
     ->middleware(['auth', 'verified']);
+
+
+/*
+|--------------------------------------------------------------------------
+| Alimentación
+|--------------------------------------------------------------------------
+*/
+
+Route::resource('alimentacion', AlimentacionController::class)
+    ->middleware(['auth', 'verified']);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,5 +107,12 @@ Route::put('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 'ac
 Route::delete('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 'eliminarEjercicio'])
     ->middleware(['auth', 'verified'])
     ->name('rutinas.eliminarEjercicio');
+
+
+/*
+|--------------------------------------------------------------------------
+| Autenticación
+|--------------------------------------------------------------------------
+*/
 
 require __DIR__.'/auth.php';

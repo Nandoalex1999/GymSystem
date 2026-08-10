@@ -26,10 +26,15 @@
             <thead class="bg-gray-900 text-red-500">
 
                 <tr>
+
                     <th class="p-4">ID</th>
+
                     <th class="p-4">Nombre</th>
+
                     <th class="p-4">Descripción</th>
+
                     <th class="p-4">Acciones</th>
+
                 </tr>
 
             </thead>
@@ -40,46 +45,58 @@
 
                 <tr class="border-b border-gray-800">
 
-                    <td class="p-4">{{ $rutina->id }}</td>
-                    <td class="p-4">{{ $rutina->nombre }}</td>
-                    <td class="p-4">{{ $rutina->descripcion }}</td>
+                    <td class="p-4">
+                        {{ $rutina->id }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ $rutina->nombre }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ $rutina->descripcion }}
+                    </td>
 
                     <td class="p-4">
 
-                        <!-- Botón Editar -->
-                        <a href="{{ route('rutinas.edit', $rutina) }}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded">
+                        <div class="flex items-center gap-2">
 
-                            Editar
+                            {{-- Botón Editar --}}
+                            <a href="{{ route('rutinas.edit', $rutina) }}"
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg">
 
-                        </a>
+                                Editar
 
-                        <!-- Botón Gestionar -->
-                        <a href="{{ route('rutinas.gestionar', $rutina) }}"
-                           class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded ml-2">
+                            </a>
 
-                            Gestionar
+                            {{-- Botón Gestionar --}}
+                            <a href="{{ route('rutinas.gestionar', $rutina) }}"
+                               class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg">
 
-                        </a>
+                                Gestionar
 
-                        <!-- Botón Eliminar -->
-                        <form action="{{ route('rutinas.destroy', $rutina) }}"
-                              method="POST"
-                              class="inline">
+                            </a>
 
-                            @csrf
-                            @method('DELETE')
+                            {{-- Botón Eliminar --}}
+                            <form action="{{ route('rutinas.destroy', $rutina) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('¿Deseas eliminar esta rutina?')">
 
-                            <button
-                                type="submit"
-                                onclick="return confirm('¿Deseas eliminar esta rutina?')"
-                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded ml-2">
+                                @csrf
 
-                                Eliminar
+                                @method('DELETE')
 
-                            </button>
+                                <button
+                                    type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg">
 
-                        </form>
+                                    Eliminar
+
+                                </button>
+
+                            </form>
+
+                        </div>
 
                     </td>
 
