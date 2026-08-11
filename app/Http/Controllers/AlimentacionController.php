@@ -17,11 +17,14 @@ class AlimentacionController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('alimentacion.index', compact('alimentaciones'));
+        return view(
+            'alimentacion.index',
+            compact('alimentaciones')
+        );
     }
 
     /**
-     * Mostrar formulario para crear un plan.
+     * Mostrar formulario para crear un plan alimenticio.
      */
     public function create()
     {
@@ -29,7 +32,10 @@ class AlimentacionController extends Controller
             ->orderBy('nombres')
             ->get();
 
-        return view('alimentacion.create', compact('clientes'));
+        return view(
+            'alimentacion.create',
+            compact('clientes')
+        );
     }
 
     /**
@@ -41,7 +47,8 @@ class AlimentacionController extends Controller
             'cliente_id' => 'required|exists:clientes,id',
             'nombre_plan' => 'required|string|max:255',
             'objetivo' => 'required|string|max:255',
-            'calorias' => 'nullable|integer|min:1',
+            'calorias' => 'nullable|integer|min:1|max:10000',
+
             'desayuno' => 'nullable|string',
             'almuerzo' => 'nullable|string',
             'merienda' => 'nullable|string',
@@ -64,7 +71,10 @@ class AlimentacionController extends Controller
 
         return redirect()
             ->route('alimentacion.index')
-            ->with('success', 'Plan alimenticio registrado correctamente.');
+            ->with(
+                'success',
+                'Plan alimenticio registrado correctamente.'
+            );
     }
 
     /**
@@ -74,37 +84,59 @@ class AlimentacionController extends Controller
     {
         $alimentacion->load('cliente');
 
-        return view('alimentacion.show', compact('alimentacion'));
+        return view(
+            'alimentacion.show',
+            compact('alimentacion')
+        );
     }
 
     /**
-     * Mostrar formulario para editar un plan.
+     * Mostrar formulario para editar un plan alimenticio.
      */
     public function edit(Alimentacion $alimentacion)
     {
-        $clientes = Cliente::orderBy('nombres')->get();
+        /*
+        |--------------------------------------------------------------------------
+        | Cargar clientes activos y mantener disponible
+        | el cliente actualmente asociado al plan.
+        |--------------------------------------------------------------------------
+        */
 
-        return view('alimentacion.edit', compact(
-            'alimentacion',
-            'clientes'
-        ));
+        $clientes = Cliente::where('estado', true)
+            ->orWhere('id', $alimentacion->cliente_id)
+            ->orderBy('nombres')
+            ->get();
+
+        $alimentacion->load('cliente');
+
+        return view(
+            'alimentacion.edit',
+            compact(
+                'alimentacion',
+                'clientes'
+            )
+        );
     }
 
     /**
      * Actualizar un plan alimenticio.
      */
-    public function update(Request $request, Alimentacion $alimentacion)
-    {
+    public function update(
+        Request $request,
+        Alimentacion $alimentacion
+    ) {
         $request->validate([
             'cliente_id' => 'required|exists:clientes,id',
             'nombre_plan' => 'required|string|max:255',
             'objetivo' => 'required|string|max:255',
-            'calorias' => 'nullable|integer|min:1',
+            'calorias' => 'nullable|integer|min:1|max:10000',
+
             'desayuno' => 'nullable|string',
             'almuerzo' => 'nullable|string',
             'merienda' => 'nullable|string',
             'cena' => 'nullable|string',
             'observaciones' => 'nullable|string',
+
             'estado' => 'required|boolean',
         ]);
 
@@ -123,7 +155,10 @@ class AlimentacionController extends Controller
 
         return redirect()
             ->route('alimentacion.index')
-            ->with('success', 'Plan alimenticio actualizado correctamente.');
+            ->with(
+                'success',
+                'Plan alimenticio actualizado correctamente.'
+            );
     }
 
     /**
@@ -135,6 +170,9 @@ class AlimentacionController extends Controller
 
         return redirect()
             ->route('alimentacion.index')
-            ->with('success', 'Plan alimenticio eliminado correctamente.');
+            ->with(
+                'success',
+                'Plan alimenticio eliminado correctamente.'
+            );
     }
 }

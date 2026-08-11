@@ -2,112 +2,374 @@
 
 @section('content')
 
-<div class="max-w-4xl mx-auto py-10 px-6">
+<div class="max-w-5xl mx-auto py-10 px-6">
 
-    <h1 class="text-3xl font-bold text-red-600 mb-8">
-        Nuevo Cliente
-    </h1>
+    {{-- Encabezado --}}
+    <div class="mb-8">
 
+        <h1 class="text-3xl font-bold text-red-600">
+            Nuevo Cliente
+        </h1>
+
+        <p class="text-gray-400 mt-2">
+            Registra la información del nuevo cliente de GymSystem.
+        </p>
+
+    </div>
+
+
+    {{-- Errores de validación --}}
+    @if ($errors->any())
+
+        <div class="mb-6 bg-red-900 border border-red-600 text-red-200 rounded-lg p-5">
+
+            <p class="font-bold mb-2">
+                Se encontraron los siguientes errores:
+            </p>
+
+            <ul class="list-disc list-inside">
+
+                @foreach ($errors->all() as $error)
+
+                    <li>
+                        {{ $error }}
+                    </li>
+
+                @endforeach
+
+            </ul>
+
+        </div>
+
+    @endif
+
+
+    {{-- Formulario --}}
     <form action="{{ route('clientes.store') }}" method="POST">
 
         @csrf
 
-        <div class="grid grid-cols-2 gap-6">
 
-            <div>
-                <label class="block mb-2 font-semibold">Cédula</label>
-                <input type="text" name="cedula"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('cedula') }}">
+        <div class="bg-gray-900 border border-red-600 rounded-xl p-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
+                {{-- Cédula --}}
+                <div>
+
+                    <label for="cedula"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Cédula
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cedula"
+                        name="cedula"
+                        maxlength="20"
+                        value="{{ old('cedula') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Nombres --}}
+                <div>
+
+                    <label for="nombres"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Nombres
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombres"
+                        name="nombres"
+                        value="{{ old('nombres') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Apellidos --}}
+                <div>
+
+                    <label for="apellidos"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Apellidos
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="apellidos"
+                        name="apellidos"
+                        value="{{ old('apellidos') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Fecha de nacimiento --}}
+                <div>
+
+                    <label for="fecha_nacimiento"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Fecha de nacimiento
+
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fecha_nacimiento"
+                        name="fecha_nacimiento"
+                        value="{{ old('fecha_nacimiento') }}"
+                        max="{{ date('Y-m-d') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Sexo --}}
+                <div>
+
+                    <label for="sexo"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Sexo
+
+                    </label>
+
+                    <select
+                        id="sexo"
+                        name="sexo"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                        <option value="">
+                            Seleccione...
+                        </option>
+
+                        <option
+                            value="Masculino"
+                            {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>
+
+                            Masculino
+
+                        </option>
+
+                        <option
+                            value="Femenino"
+                            {{ old('sexo') == 'Femenino' ? 'selected' : '' }}>
+
+                            Femenino
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                {{-- Teléfono --}}
+                <div>
+
+                    <label for="telefono"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Teléfono
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="telefono"
+                        name="telefono"
+                        maxlength="20"
+                        value="{{ old('telefono') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Correo --}}
+                <div>
+
+                    <label for="correo"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Correo electrónico
+
+                    </label>
+
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        value="{{ old('correo') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Dirección --}}
+                <div>
+
+                    <label for="direccion"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Dirección
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="direccion"
+                        name="direccion"
+                        value="{{ old('direccion') }}"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Altura --}}
+                <div>
+
+                    <label for="altura"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Altura (metros)
+
+                    </label>
+
+                    <input
+                        type="number"
+                        id="altura"
+                        name="altura"
+                        step="0.01"
+                        min="0.5"
+                        max="2.5"
+                        value="{{ old('altura') }}"
+                        required
+                        placeholder="Ej. 1.70"
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Peso --}}
+                <div>
+
+                    <label for="peso_actual"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Peso actual (kg)
+
+                    </label>
+
+                    <input
+                        type="number"
+                        id="peso_actual"
+                        name="peso_actual"
+                        step="0.01"
+                        min="1"
+                        max="500"
+                        value="{{ old('peso_actual') }}"
+                        required
+                        placeholder="Ej. 80.50"
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
+
+                {{-- Objetivo --}}
+                <div class="md:col-span-2">
+
+                    <label for="objetivo"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Objetivo
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="objetivo"
+                        name="objetivo"
+                        value="{{ old('objetivo') }}"
+                        required
+                        placeholder="Ej. Perder grasa, ganar masa muscular..."
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                </div>
+
             </div>
 
-            <div>
-                <label class="block mb-2 font-semibold">Nombres</label>
-                <input type="text" name="nombres"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('nombres') }}">
-            </div>
 
-            <div>
-                <label class="block mb-2 font-semibold">Apellidos</label>
-                <input type="text" name="apellidos"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('apellidos') }}">
-            </div>
+            {{-- Botones --}}
+            <div class="flex flex-col sm:flex-row gap-4 mt-8">
 
-            <div>
-                <label class="block mb-2 font-semibold">Fecha de nacimiento</label>
-                <input type="date" name="fecha_nacimiento"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('fecha_nacimiento') }}">
-            </div>
+                <button
+                    type="submit"
+                    class="bg-red-600 hover:bg-red-700
+                           text-white font-semibold
+                           px-6 py-3 rounded-lg
+                           transition duration-300">
 
-            <div>
-                <label class="block mb-2 font-semibold">Sexo</label>
+                    Guardar Cliente
 
-                <select name="sexo"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2">
+                </button>
 
-                    <option value="">Seleccione...</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
 
-                </select>
+                <a
+                    href="{{ route('clientes.index') }}"
+                    class="bg-gray-700 hover:bg-gray-600
+                           text-white font-semibold
+                           px-6 py-3 rounded-lg
+                           text-center
+                           transition duration-300">
+
+                    Cancelar
+
+                </a>
 
             </div>
-
-            <div>
-                <label class="block mb-2 font-semibold">Teléfono</label>
-                <input type="text" name="telefono"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('telefono') }}">
-            </div>
-
-            <div>
-                <label class="block mb-2 font-semibold">Correo</label>
-                <input type="email" name="correo"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('correo') }}">
-            </div>
-
-            <div>
-                <label class="block mb-2 font-semibold">Dirección</label>
-                <input type="text" name="direccion"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('direccion') }}">
-            </div>
-
-            <div>
-                <label class="block mb-2 font-semibold">Altura</label>
-                <input type="number" step="0.01" name="altura"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('altura') }}">
-            </div>
-
-            <div>
-                <label class="block mb-2 font-semibold">Peso actual</label>
-                <input type="number" step="0.01" name="peso_actual"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('peso_actual') }}">
-            </div>
-
-            <div class="col-span-2">
-                <label class="block mb-2 font-semibold">Objetivo</label>
-                <input type="text" name="objetivo"
-                    class="w-full rounded border border-gray-500 bg-gray-900 text-white p-2"
-                    value="{{ old('objetivo') }}">
-            </div>
-
-        </div>
-
-        <div class="mt-8">
-
-            <button
-                class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg">
-
-                Guardar Cliente
-
-            </button>
 
         </div>
 

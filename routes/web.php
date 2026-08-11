@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\RutinaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AlimentacionController;
+use App\Http\Controllers\ReporteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,10 +36,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 |--------------------------------------------------------------------------
 | Usuarios
 |--------------------------------------------------------------------------
+| Solo Administradores pueden gestionar usuarios.
+|--------------------------------------------------------------------------
 */
 
 Route::resource('usuarios', UserController::class)
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified', 'role:Administrador']);
 
 
 /*
@@ -69,8 +71,7 @@ Route::resource('rutinas', RutinaController::class)
 */
 
 Route::resource('clientes', ClienteController::class)
-    ->middleware(['auth', 'verified']);
-
+    ->middleware(['auth', 'verified', 'role:Administrador,Entrenador']);
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +85,17 @@ Route::resource('alimentacion', AlimentacionController::class)
 
 /*
 |--------------------------------------------------------------------------
+| Reportes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/reportes', [ReporteController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('reportes.index');
+
+
+/*
+|--------------------------------------------------------------------------
 | RUTINAS - GESTIÓN DE EJERCICIOS
 |--------------------------------------------------------------------------
 */
@@ -92,17 +104,21 @@ Route::get('/rutinas/{rutina}/gestionar', [RutinaController::class, 'gestionar']
     ->middleware(['auth', 'verified'])
     ->name('rutinas.gestionar');
 
+
 Route::post('/rutinas/{rutina}/agregar-ejercicio', [RutinaController::class, 'agregarEjercicio'])
     ->middleware(['auth', 'verified'])
     ->name('rutinas.agregarEjercicio');
+
 
 Route::get('/rutinas/ejercicio/{rutinaEjercicio}/editar', [RutinaController::class, 'editarEjercicio'])
     ->middleware(['auth', 'verified'])
     ->name('rutinas.editarEjercicio');
 
+
 Route::put('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 'actualizarEjercicio'])
     ->middleware(['auth', 'verified'])
     ->name('rutinas.actualizarEjercicio');
+
 
 Route::delete('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 'eliminarEjercicio'])
     ->middleware(['auth', 'verified'])
@@ -115,4 +131,4 @@ Route::delete('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

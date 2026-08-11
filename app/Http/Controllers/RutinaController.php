@@ -10,17 +10,17 @@ use App\Models\RutinaEjercicio;
 class RutinaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar todas las rutinas.
      */
     public function index()
     {
-        $rutinas = Rutina::orderBy('id')->get();
+        $rutinas = Rutina::orderBy('id', 'desc')->get();
 
         return view('rutinas.index', compact('rutinas'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario para crear una rutina.
      */
     public function create()
     {
@@ -28,13 +28,13 @@ class RutinaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guardar una nueva rutina.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|max:255',
-            'descripcion' => 'nullable',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
         ]);
 
         Rutina::create([
@@ -42,19 +42,21 @@ class RutinaController extends Controller
             'descripcion' => $request->descripcion,
         ]);
 
-        return redirect()->route('rutinas.index');
+        return redirect()
+            ->route('rutinas.index')
+            ->with('success', 'Rutina creada correctamente.');
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar una rutina.
      */
-    public function show(string $id)
+    public function show(Rutina $rutina)
     {
-        //
+        return view('rutinas.show', compact('rutina'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario para editar una rutina.
      */
     public function edit(Rutina $rutina)
     {
@@ -62,13 +64,13 @@ class RutinaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar una rutina.
      */
     public function update(Request $request, Rutina $rutina)
     {
         $request->validate([
-            'nombre' => 'required|max:255',
-            'descripcion' => 'nullable',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
         ]);
 
         $rutina->update([
@@ -76,57 +78,113 @@ class RutinaController extends Controller
             'descripcion' => $request->descripcion,
         ]);
 
-        return redirect()->route('rutinas.index');
+        return redirect()
+            ->route('rutinas.index')
+            ->with('success', 'Rutina actualizada correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar una rutina.
      */
     public function destroy(Rutina $rutina)
     {
         $rutina->delete();
 
-        return redirect()->route('rutinas.index');
+        return redirect()
+            ->route('rutinas.index')
+            ->with('success', 'Rutina eliminada correctamente.');
     }
 
     /**
-     * Gestionar ejercicios de la rutina.
+     * Gestionar ejercicios de una rutina.
      */
     public function gestionar(Rutina $rutina)
     {
+        // Todos los ejercicios disponibles para agregar.
         $ejercicios = Ejercicio::orderBy('nombre')->get();
 
+        // Ejercicios que ya pertenecen a la rutina.
         $rutinaEjercicios = RutinaEjercicio::with('ejercicio')
             ->where('rutina_id', $rutina->id)
             ->orderBy('orden')
             ->get();
 
-        return view('rutinas.gestionar', compact(
-            'rutina',
-            'ejercicios',
-            'rutinaEjercicios'
-        ));
+        return view(
+            'rutinas.gestionar',
+            compact(
+                'rutina',
+                'ejercicios',
+                'rutinaEjercicios'
+            )
+        );
     }
 
     /**
-     * Mostrar formulario para editar un ejercicio de la rutina.
+     * Mostrar formulario para editar
+     * un ejercicio de la rutina.
      */
     public function editarEjercicio(RutinaEjercicio $rutinaEjercicio)
     {
-        return view('rutinas.editar-ejercicio', compact('rutinaEjercicio'));
+        $rutinaEjercicio->load('ejercicio', 'rutina');
+
+        return view(
+            'rutinas.editar-ejercicio',
+            compact('rutinaEjercicio')
+        );
     }
 
     /**
-     * Agregar ejercicio a la rutina.
+     * Agregar un ejercicio a una rutina.
      */
-    public function agregarEjercicio(Request $request, Rutina $rutina)
-    {
+    public function agregarEjercicio(
+        Request $request,
+        Rutina $rutina
+    ) {
         $request->validate([
-            'ejercicio_id' => 'required',
+            'ejercicio_id' => 'required|exists:ejercicios,id',
             'series' => 'required|integer|min:1',
             'repeticiones' => 'required|integer|min:1',
             'descanso' => 'required|integer|min:0',
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Verificar si el ejercicio ya existe
+        |--------------------------------------------------------------------------
+        */
+
+        $existe = RutinaEjercicio::where('rutina_id', $rutina->id)
+            ->where('ejercicio_id', $request->ejercicio_id)
+            ->exists();
+
+        if ($existe) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Este ejercicio ya está agregado a la rutina.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Obtener el siguiente número de orden
+        |--------------------------------------------------------------------------
+        */
+
+        $ultimoOrden = RutinaEjercicio::where(
+            'rutina_id',
+            $rutina->id
+        )->max('orden');
+
+        $nuevoOrden = ($ultimoOrden ?? 0) + 1;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Crear relación rutina - ejercicio
+        |--------------------------------------------------------------------------
+        */
 
         RutinaEjercicio::create([
             'rutina_id' => $rutina->id,
@@ -134,41 +192,86 @@ class RutinaController extends Controller
             'series' => $request->series,
             'repeticiones' => $request->repeticiones,
             'descanso' => $request->descanso,
-            'orden' => 1,
+            'orden' => $nuevoOrden,
         ]);
 
-        return redirect()->back()->with('success', 'Ejercicio agregado correctamente.');
+        return redirect()
+            ->back()
+            ->with(
+                'success',
+                'Ejercicio agregado correctamente.'
+            );
     }
 
     /**
-     * Actualizar ejercicio de la rutina.
+     * Actualizar un ejercicio de la rutina.
      */
-    public function actualizarEjercicio(Request $request, RutinaEjercicio $rutinaEjercicio)
-{
-    $request->validate([
-        'series' => 'required|integer|min:1',
-        'repeticiones' => 'required|integer|min:1',
-        'descanso' => 'required|integer|min:0',
-    ]);
+    public function actualizarEjercicio(
+        Request $request,
+        RutinaEjercicio $rutinaEjercicio
+    ) {
+        $request->validate([
+            'series' => 'required|integer|min:1',
+            'repeticiones' => 'required|integer|min:1',
+            'descanso' => 'required|integer|min:0',
+        ]);
 
-    $rutinaEjercicio->series = $request->series;
-    $rutinaEjercicio->repeticiones = $request->repeticiones;
-    $rutinaEjercicio->descanso = $request->descanso;
+        $rutinaEjercicio->update([
+            'series' => $request->series,
+            'repeticiones' => $request->repeticiones,
+            'descanso' => $request->descanso,
+        ]);
 
-    $rutinaEjercicio->save();
-
-    return redirect()
-        ->route('rutinas.gestionar', $rutinaEjercicio->rutina_id)
-        ->with('success', 'Ejercicio actualizado correctamente.');
-}
+        return redirect()
+            ->route(
+                'rutinas.gestionar',
+                $rutinaEjercicio->rutina_id
+            )
+            ->with(
+                'success',
+                'Ejercicio actualizado correctamente.'
+            );
+    }
 
     /**
-     * Eliminar ejercicio de la rutina.
+     * Eliminar un ejercicio de la rutina.
      */
-    public function eliminarEjercicio(RutinaEjercicio $rutinaEjercicio)
-    {
+    public function eliminarEjercicio(
+        RutinaEjercicio $rutinaEjercicio
+    ) {
+        $rutinaId = $rutinaEjercicio->rutina_id;
+
+        // Eliminar el ejercicio.
         $rutinaEjercicio->delete();
 
-        return redirect()->back()->with('success', 'Ejercicio eliminado correctamente.');
+        /*
+        |--------------------------------------------------------------------------
+        | Reorganizar el orden
+        |--------------------------------------------------------------------------
+        */
+
+        $ejerciciosRestantes = RutinaEjercicio::where(
+            'rutina_id',
+            $rutinaId
+        )
+            ->orderBy('orden')
+            ->get();
+
+        $orden = 1;
+
+        foreach ($ejerciciosRestantes as $item) {
+            $item->update([
+                'orden' => $orden,
+            ]);
+
+            $orden++;
+        }
+
+        return redirect()
+            ->back()
+            ->with(
+                'success',
+                'Ejercicio eliminado correctamente.'
+            );
     }
 }

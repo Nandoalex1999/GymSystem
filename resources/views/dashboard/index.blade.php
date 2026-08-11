@@ -4,25 +4,45 @@
 
 <div class="max-w-7xl mx-auto py-12 px-6">
 
-    <h1 class="text-4xl font-bold text-red-600">
-        Panel de Administración
-    </h1>
+    <!-- Encabezado -->
+    <div class="mb-10">
 
-    <p class="text-gray-400 mt-2">
-        Bienvenido a GymSystem.
-    </p>
+        <h1 class="text-4xl font-bold text-red-600">
+            Panel de Administración
+        </h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        <p class="text-gray-400 mt-2 text-lg">
+            Bienvenido a GymSystem.
+        </p>
+
+    </div>
+
+
+    <!-- Módulos del sistema -->
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
 
         <!-- Usuarios -->
+
         <a href="{{ route('usuarios.index') }}"
-           class="bg-gray-900 rounded-xl p-6 border border-red-600 hover:bg-gray-800 hover:scale-105 transition duration-300">
+           class="bg-gray-900 rounded-xl p-6 border border-red-600
+                  hover:bg-gray-800 hover:scale-105
+                  transition duration-300">
 
-            <h2 class="text-red-500 font-bold text-xl">
-                👤 Usuarios
-            </h2>
+            <div class="flex items-center gap-3">
 
-            <p class="mt-3 text-gray-400">
+                <span class="text-3xl">
+                    👤
+                </span>
+
+                <h2 class="text-red-500 font-bold text-xl">
+                    Usuarios
+                </h2>
+
+            </div>
+
+            <p class="mt-4 text-gray-400">
                 Gestionar usuarios del sistema.
             </p>
 
@@ -30,14 +50,25 @@
 
 
         <!-- Ejercicios -->
+
         <a href="{{ route('ejercicios.index') }}"
-           class="bg-gray-900 rounded-xl p-6 border border-red-600 hover:bg-gray-800 hover:scale-105 transition duration-300">
+           class="bg-gray-900 rounded-xl p-6 border border-red-600
+                  hover:bg-gray-800 hover:scale-105
+                  transition duration-300">
 
-            <h2 class="text-red-500 font-bold text-xl">
-                💪 Ejercicios
-            </h2>
+            <div class="flex items-center gap-3">
 
-            <p class="mt-3 text-gray-400">
+                <span class="text-3xl">
+                    💪
+                </span>
+
+                <h2 class="text-red-500 font-bold text-xl">
+                    Ejercicios
+                </h2>
+
+            </div>
+
+            <p class="mt-4 text-gray-400">
                 Administrar ejercicios del gimnasio.
             </p>
 
@@ -45,29 +76,51 @@
 
 
         <!-- Rutinas -->
+
         <a href="{{ route('rutinas.index') }}"
-           class="bg-gray-900 rounded-xl p-6 border border-red-600 hover:bg-gray-800 hover:scale-105 transition duration-300">
+           class="bg-gray-900 rounded-xl p-6 border border-red-600
+                  hover:bg-gray-800 hover:scale-105
+                  transition duration-300">
 
-            <h2 class="text-red-500 font-bold text-xl">
-                📋 Rutinas
-            </h2>
+            <div class="flex items-center gap-3">
 
-            <p class="mt-3 text-gray-400">
-                Administración de rutinas.
+                <span class="text-3xl">
+                    📋
+                </span>
+
+                <h2 class="text-red-500 font-bold text-xl">
+                    Rutinas
+                </h2>
+
+            </div>
+
+            <p class="mt-4 text-gray-400">
+                Administración de rutinas y ejercicios.
             </p>
 
         </a>
 
 
         <!-- Clientes -->
+
         <a href="{{ route('clientes.index') }}"
-           class="bg-gray-900 rounded-xl p-6 border border-red-600 hover:bg-gray-800 hover:scale-105 transition duration-300">
+           class="bg-gray-900 rounded-xl p-6 border border-red-600
+                  hover:bg-gray-800 hover:scale-105
+                  transition duration-300">
 
-            <h2 class="text-red-500 font-bold text-xl">
-                🏋️ Clientes
-            </h2>
+            <div class="flex items-center gap-3">
 
-            <p class="mt-3 text-gray-400">
+                <span class="text-3xl">
+                    🏋️
+                </span>
+
+                <h2 class="text-red-500 font-bold text-xl">
+                    Clientes
+                </h2>
+
+            </div>
+
+            <p class="mt-4 text-gray-400">
                 Gestionar clientes del gimnasio.
             </p>
 
@@ -75,32 +128,71 @@
 
 
         <!-- Alimentación -->
-<a href="{{ route('alimentacion.index') }}"
-   class="bg-gray-900 rounded-xl p-6 border border-red-600 hover:bg-gray-800 hover:scale-105 transition duration-300">
 
-    <h2 class="text-red-500 font-bold text-xl">
-        🍽️ Alimentación
-    </h2>
+        <a href="{{ route('alimentacion.index') }}"
+           class="bg-gray-900 rounded-xl p-6 border border-red-600
+                  hover:bg-gray-800 hover:scale-105
+                  transition duration-300">
 
-    <p class="mt-3 text-gray-400">
-        Gestionar planes alimenticios.
-    </p>
+            <div class="flex items-center gap-3">
 
-</a>
+                <span class="text-3xl">
+                    🍽️
+                </span>
+
+                <h2 class="text-red-500 font-bold text-xl">
+                    Alimentación
+                </h2>
+
+            </div>
+
+            <p class="mt-4 text-gray-400">
+                Gestionar planes alimenticios.
+            </p>
+
+        </a>
 
 
         <!-- Reportes -->
-        <div class="bg-gray-900 rounded-xl p-6 border border-gray-700 opacity-70 cursor-not-allowed">
 
-            <h2 class="text-red-500 font-bold text-xl">
-                📊 Reportes
-            </h2>
+        <a href="{{ route('reportes.index') }}"
+           class="bg-gray-900 rounded-xl p-6 border border-red-600
+                  hover:bg-gray-800 hover:scale-105
+                  transition duration-300">
 
-            <p class="mt-3 text-gray-400">
-                Próximamente.
+            <div class="flex items-center gap-3">
+
+                <span class="text-3xl">
+                    📊
+                </span>
+
+                <h2 class="text-red-500 font-bold text-xl">
+                    Reportes
+                </h2>
+
+            </div>
+
+            <p class="mt-4 text-gray-400">
+                Consultar estadísticas y reportes del sistema.
             </p>
 
-        </div>
+        </a>
+
+    </div>
+
+
+    <!-- Información del sistema -->
+
+    <div class="mt-10 bg-gray-900 rounded-xl border border-gray-700 p-6">
+
+        <h2 class="text-xl font-bold text-red-500">
+            GymSystem
+        </h2>
+
+        <p class="text-gray-400 mt-2">
+            Sistema web para la gestión de entrenamiento físico,
+            alimentación y seguimiento de clientes.
+        </p>
 
     </div>
 
