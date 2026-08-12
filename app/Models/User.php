@@ -2,34 +2,27 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Role;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Los atributos que se pueden asignar masivamente.
      */
     protected $fillable = [
-    'name',
-    'email',
-    'password',
-    'role_id',
-];
+        'name',
+        'email',
+        'password',
+        'role_id',
+    ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Los atributos que deben permanecer ocultos.
      */
     protected $hidden = [
         'password',
@@ -37,9 +30,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Conversión de atributos.
      */
     protected function casts(): array
     {
@@ -49,8 +40,19 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Rol asignado al usuario.
+     */
     public function role()
-{
-    return $this->belongsTo(Role::class);
-}
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Cliente asociado al usuario.
+     */
+    public function cliente()
+    {
+        return $this->hasOne(Cliente::class);
+    }
 }

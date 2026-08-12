@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -22,7 +23,12 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('clientes.create');
+        // Solo usuarios que todavía no tienen un cliente asociado.
+        $usuarios = User::whereDoesntHave('cliente')
+            ->orderBy('name')
+            ->get();
+
+        return view('clientes.create', compact('usuarios'));
     }
 
     /**
@@ -31,7 +37,8 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'cedula' => 'required|unique:clientes,cedula|max:20',
+            'user_id' => 'required|exists:users,id|unique:clientes,user_id',
+            'cedula' => 'required|max:20|unique:clientes,cedula',
             'nombres' => 'required|max:255',
             'apellidos' => 'required|max:255',
             'fecha_nacimiento' => 'required|date',
@@ -45,6 +52,7 @@ class ClienteController extends Controller
         ]);
 
         Cliente::create([
+            'user_id' => $request->user_id,
             'cedula' => $request->cedula,
             'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
@@ -69,7 +77,14 @@ class ClienteController extends Controller
      */
     public function edit(Cliente $cliente)
     {
-        return view('clientes.edit', compact('cliente'));
+        // Usuarios sin cliente asociado
+        // más el usuario actualmente asociado a este cliente.
+        $usuarios = User::whereDoesntHave('cliente')
+            ->orWhere('id', $cliente->user_id)
+            ->orderBy('name')
+            ->get();
+
+        return view('clientes.edit', compact('cliente', 'usuarios'));
     }
 
     /**
@@ -78,6 +93,7 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         $request->validate([
+            'user_id' => 'required|exists:users,id|unique:clientes,user_id,' . $cliente->id,
             'cedula' => 'required|max:20|unique:clientes,cedula,' . $cliente->id,
             'nombres' => 'required|max:255',
             'apellidos' => 'required|max:255',
@@ -92,6 +108,7 @@ class ClienteController extends Controller
             'estado' => 'required|boolean',
         ]);
 
+        $cliente->user_id = $request->user_id;
         $cliente->cedula = $request->cedula;
         $cliente->nombres = $request->nombres;
         $cliente->apellidos = $request->apellidos;

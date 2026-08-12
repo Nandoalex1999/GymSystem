@@ -15,6 +15,49 @@
             @csrf
             @method('PUT')
 
+
+            {{-- Cliente --}}
+            <div class="mb-5">
+
+                <label class="block text-white mb-2">
+                    Cliente
+                </label>
+
+                <select
+                    name="cliente_id"
+                    class="w-full rounded bg-gray-800 border border-gray-700 text-white p-3"
+                    required>
+
+                    <option value="">
+                        Selecciona un cliente
+                    </option>
+
+                    @foreach ($clientes as $cliente)
+
+                        <option
+                            value="{{ $cliente->id }}"
+                            {{ old('cliente_id', $rutina->cliente_id) == $cliente->id ? 'selected' : '' }}>
+
+                            {{ $cliente->nombres }}
+                            {{ $cliente->apellidos }}
+                            - {{ $cliente->cedula }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+                @error('cliente_id')
+                    <p class="text-red-500 text-sm mt-1">
+                        {{ $message }}
+                    </p>
+                @enderror
+
+            </div>
+
+
+            {{-- Nombre --}}
             <div class="mb-5">
 
                 <label class="block text-white mb-2">
@@ -24,12 +67,21 @@
                 <input
                     type="text"
                     name="nombre"
-                    value="{{ $rutina->nombre }}"
+                    value="{{ old('nombre', $rutina->nombre) }}"
+                    placeholder="Ejemplo: Rutina de hipertrofia"
                     class="w-full rounded bg-gray-800 border border-gray-700 text-white p-3"
                     required>
 
+                @error('nombre')
+                    <p class="text-red-500 text-sm mt-1">
+                        {{ $message }}
+                    </p>
+                @enderror
+
             </div>
 
+
+            {{-- Descripción --}}
             <div class="mb-8">
 
                 <label class="block text-white mb-2">
@@ -39,9 +91,17 @@
                 <textarea
                     name="descripcion"
                     rows="4"
-                    class="w-full rounded bg-gray-800 border border-gray-700 text-white p-3">{{ $rutina->descripcion }}</textarea>
+                    placeholder="Describe brevemente el objetivo o contenido de la rutina..."
+                    class="w-full rounded bg-gray-800 border border-gray-700 text-white p-3">{{ old('descripcion', $rutina->descripcion) }}</textarea>
+
+                @error('descripcion')
+                    <p class="text-red-500 text-sm mt-1">
+                        {{ $message }}
+                    </p>
+                @enderror
 
             </div>
+
 
             <div class="flex gap-4">
 
@@ -49,9 +109,10 @@
                     type="submit"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">
 
-                    Actualizar
+                    Actualizar Rutina
 
                 </button>
+
 
                 <a
                     href="{{ route('rutinas.index') }}"

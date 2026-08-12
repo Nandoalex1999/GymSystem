@@ -8,7 +8,6 @@
     <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
         <div>
-
             <h1 class="text-3xl font-bold text-red-600">
                 Gestión de Rutinas
             </h1>
@@ -16,15 +15,11 @@
             <p class="text-gray-400 mt-2">
                 Administra las rutinas y los ejercicios asignados.
             </p>
-
         </div>
-
 
         <a href="{{ route('rutinas.create') }}"
            class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg transition duration-300">
-
             + Nueva Rutina
-
         </a>
 
     </div>
@@ -33,11 +28,8 @@
     {{-- Mensaje de éxito --}}
     @if(session('success'))
 
-        <div class="mb-6 bg-green-900 border border-green-600
-                    text-green-300 px-5 py-4 rounded-lg">
-
+        <div class="mb-6 bg-green-900 border border-green-600 text-green-300 px-5 py-4 rounded-lg">
             {{ session('success') }}
-
         </div>
 
     @endif
@@ -46,11 +38,8 @@
     {{-- Mensaje de error --}}
     @if(session('error'))
 
-        <div class="mb-6 bg-red-900 border border-red-600
-                    text-red-300 px-5 py-4 rounded-lg">
-
+        <div class="mb-6 bg-red-900 border border-red-600 text-red-300 px-5 py-4 rounded-lg">
             {{ session('error') }}
-
         </div>
 
     @endif
@@ -67,6 +56,10 @@
 
                     <th class="p-4">
                         ID
+                    </th>
+
+                    <th class="p-4">
+                        Cliente
                     </th>
 
                     <th class="p-4">
@@ -98,6 +91,19 @@
                         </td>
 
 
+                        {{-- Cliente --}}
+                        <td class="p-4 text-gray-200">
+                            @if($rutina->cliente)
+                                {{ $rutina->cliente->nombres }}
+                                {{ $rutina->cliente->apellidos }}
+                            @else
+                                <span class="text-gray-500">
+                                    Sin cliente
+                                </span>
+                            @endif
+                        </td>
+
+
                         {{-- Nombre --}}
                         <td class="p-4 text-gray-200 font-semibold">
                             {{ $rutina->nombre }}
@@ -115,26 +121,17 @@
 
                             <div class="flex items-center gap-2">
 
-
                                 {{-- Editar --}}
                                 <a href="{{ route('rutinas.edit', $rutina) }}"
-                                   class="bg-blue-600 hover:bg-blue-700
-                                          text-white px-3 py-2 rounded-lg
-                                          transition">
-
+                                   class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition">
                                     Editar
-
                                 </a>
 
 
                                 {{-- Gestionar --}}
                                 <a href="{{ route('rutinas.gestionar', $rutina) }}"
-                                   class="bg-green-600 hover:bg-green-700
-                                          text-white px-3 py-2 rounded-lg
-                                          transition">
-
+                                   class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg transition">
                                     Gestionar
-
                                 </a>
 
 
@@ -146,17 +143,12 @@
                                     onsubmit="return confirm('¿Deseas eliminar esta rutina?')">
 
                                     @csrf
-
                                     @method('DELETE')
 
                                     <button
                                         type="submit"
-                                        class="bg-red-600 hover:bg-red-700
-                                               text-white px-3 py-2 rounded-lg
-                                               transition">
-
+                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition">
                                         Eliminar
-
                                     </button>
 
                                 </form>
@@ -171,11 +163,9 @@
 
                     <tr>
 
-                        <td colspan="4"
+                        <td colspan="5"
                             class="text-center p-8 text-gray-400">
-
                             No existen rutinas registradas.
-
                         </td>
 
                     </tr>

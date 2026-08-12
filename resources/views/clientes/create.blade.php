@@ -6,7 +6,6 @@
 
     {{-- Encabezado --}}
     <div class="mb-8">
-
         <h1 class="text-3xl font-bold text-red-600">
             Nuevo Cliente
         </h1>
@@ -14,13 +13,10 @@
         <p class="text-gray-400 mt-2">
             Registra la información del nuevo cliente de GymSystem.
         </p>
-
     </div>
-
 
     {{-- Errores de validación --}}
     @if ($errors->any())
-
         <div class="mb-6 bg-red-900 border border-red-600 text-red-200 rounded-lg p-5">
 
             <p class="font-bold mb-2">
@@ -28,32 +24,64 @@
             </p>
 
             <ul class="list-disc list-inside">
-
                 @foreach ($errors->all() as $error)
-
-                    <li>
-                        {{ $error }}
-                    </li>
-
+                    <li>{{ $error }}</li>
                 @endforeach
-
             </ul>
 
         </div>
-
     @endif
-
 
     {{-- Formulario --}}
     <form action="{{ route('clientes.store') }}" method="POST">
 
         @csrf
 
-
         <div class="bg-gray-900 border border-red-600 rounded-xl p-6">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+                {{-- Usuario asociado --}}
+                <div class="md:col-span-2">
+
+                    <label for="user_id"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Usuario asociado
+
+                    </label>
+
+                    <select
+                        id="user_id"
+                        name="user_id"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                        <option value="">
+                            Seleccione un usuario...
+                        </option>
+
+                        @foreach ($usuarios as $usuario)
+
+                            <option
+                                value="{{ $usuario->id }}"
+                                {{ old('user_id') == $usuario->id ? 'selected' : '' }}>
+
+                                {{ $usuario->name }} - {{ $usuario->email }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <p class="text-sm text-gray-400 mt-2">
+                        Selecciona el usuario que tendrá acceso a la información de este cliente.
+                    </p>
+
+                </div>
 
                 {{-- Cédula --}}
                 <div>
@@ -78,7 +106,6 @@
 
                 </div>
 
-
                 {{-- Nombres --}}
                 <div>
 
@@ -100,7 +127,6 @@
                                focus:border-red-600 focus:ring-red-600">
 
                 </div>
-
 
                 {{-- Apellidos --}}
                 <div>
@@ -124,7 +150,6 @@
 
                 </div>
 
-
                 {{-- Fecha de nacimiento --}}
                 <div>
 
@@ -147,7 +172,6 @@
                                focus:border-red-600 focus:ring-red-600">
 
                 </div>
-
 
                 {{-- Sexo --}}
                 <div>
@@ -191,7 +215,6 @@
 
                 </div>
 
-
                 {{-- Teléfono --}}
                 <div>
 
@@ -215,7 +238,6 @@
 
                 </div>
 
-
                 {{-- Correo --}}
                 <div>
 
@@ -238,7 +260,6 @@
 
                 </div>
 
-
                 {{-- Dirección --}}
                 <div>
 
@@ -260,7 +281,6 @@
                                focus:border-red-600 focus:ring-red-600">
 
                 </div>
-
 
                 {{-- Altura --}}
                 <div>
@@ -288,7 +308,6 @@
 
                 </div>
 
-
                 {{-- Peso --}}
                 <div>
 
@@ -315,7 +334,6 @@
 
                 </div>
 
-
                 {{-- Objetivo --}}
                 <div class="md:col-span-2">
 
@@ -341,7 +359,6 @@
 
             </div>
 
-
             {{-- Botones --}}
             <div class="flex flex-col sm:flex-row gap-4 mt-8">
 
@@ -355,7 +372,6 @@
                     Guardar Cliente
 
                 </button>
-
 
                 <a
                     href="{{ route('clientes.index') }}"

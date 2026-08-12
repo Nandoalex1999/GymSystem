@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     protected $fillable = [
+        'user_id',
         'cedula',
         'nombres',
         'apellidos',
@@ -28,6 +29,25 @@ class Cliente extends Model
         'estado' => 'boolean',
     ];
 
+    /**
+     * Usuario asociado al cliente.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Rutinas asignadas al cliente.
+     */
+    public function rutinas()
+    {
+        return $this->hasMany(Rutina::class);
+    }
+
+    /**
+     * Planes de alimentación del cliente.
+     */
     public function alimentaciones()
     {
         return $this->hasMany(Alimentacion::class);

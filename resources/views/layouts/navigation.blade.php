@@ -4,15 +4,26 @@
 
         <div class="flex justify-between h-16">
 
-            <!-- Logo -->
-            <div class="flex items-center">
+            {{-- Logo y navegación --}}
+            <div class="flex items-center gap-6">
+
+                {{-- Logo --}}
                 <a href="{{ route('dashboard') }}"
                    class="text-2xl font-bold text-red-500">
                     GymSystem
                 </a>
+
+                {{-- Mis Rutinas: solo para usuarios asociados a un cliente --}}
+                @if(Auth::user()->cliente)
+                    <a href="{{ route('cliente.rutinas.index') }}"
+                       class="text-gray-300 hover:text-red-500 transition font-medium">
+                        Mis Rutinas
+                    </a>
+                @endif
+
             </div>
 
-            <!-- Usuario -->
+            {{-- Usuario --}}
             <div class="flex items-center">
 
                 <x-dropdown align="right" width="48">
@@ -26,9 +37,11 @@
                             <svg class="ml-2 h-4 w-4 fill-current"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20">
+
                                 <path fill-rule="evenodd"
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                     clip-rule="evenodd"/>
+
                             </svg>
 
                         </button>

@@ -56,6 +56,44 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 
+                {{-- Usuario asociado --}}
+                <div>
+
+                    <label for="user_id"
+                           class="block mb-2 font-semibold text-gray-200">
+
+                        Usuario asociado
+
+                    </label>
+
+                    <select
+                        id="user_id"
+                        name="user_id"
+                        required
+                        class="w-full rounded-lg border border-gray-600
+                               bg-gray-800 text-white p-3
+                               focus:border-red-600 focus:ring-red-600">
+
+                        <option value="">
+                            Seleccione un usuario
+                        </option>
+
+                        @foreach ($usuarios as $usuario)
+
+                            <option value="{{ $usuario->id }}"
+                                {{ old('user_id', $cliente->user_id) == $usuario->id ? 'selected' : '' }}>
+
+                                {{ $usuario->name }} - {{ $usuario->email }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                </div>
+
+
                 {{-- Cédula --}}
                 <div>
 
@@ -140,7 +178,7 @@
                         type="date"
                         id="fecha_nacimiento"
                         name="fecha_nacimiento"
-                        value="{{ old('fecha_nacimiento', $cliente->fecha_nacimiento) }}"
+                        value="{{ old('fecha_nacimiento', $cliente->fecha_nacimiento ? $cliente->fecha_nacimiento->format('Y-m-d') : '') }}"
                         max="{{ date('Y-m-d') }}"
                         required
                         class="w-full rounded-lg border border-gray-600
