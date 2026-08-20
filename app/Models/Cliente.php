@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
+    /**
+     * Campos que pueden asignarse masivamente.
+     */
     protected $fillable = [
         'user_id',
         'cedula',
@@ -22,6 +25,9 @@ class Cliente extends Model
         'estado',
     ];
 
+    /**
+     * Conversión de tipos de datos.
+     */
     protected $casts = [
         'fecha_nacimiento' => 'date',
         'altura' => 'decimal:2',
@@ -51,5 +57,13 @@ class Cliente extends Model
     public function alimentaciones()
     {
         return $this->hasMany(Alimentacion::class);
+    }
+
+    /**
+     * Registros de seguimiento corporal del cliente.
+     */
+    public function seguimientos()
+    {
+        return $this->hasMany(Seguimiento::class);
     }
 }

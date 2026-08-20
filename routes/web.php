@@ -8,7 +8,10 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AlimentacionController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ClienteRutinaController;
+use App\Http\Controllers\ClienteAlimentacionController;
+use App\Http\Controllers\ClienteSeguimientoController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +23,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard
@@ -30,6 +34,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
 /*
 |--------------------------------------------------------------------------
 | Usuarios
@@ -39,7 +44,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 */
 
 Route::resource('usuarios', UserController::class)
-    ->middleware(['auth', 'verified', 'role:Administrador']);
+    ->middleware([
+        'auth',
+        'verified',
+        'role:Administrador'
+    ]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +58,11 @@ Route::resource('usuarios', UserController::class)
 */
 
 Route::resource('ejercicios', EjercicioController::class)
-    ->middleware(['auth', 'verified']);
+    ->middleware([
+        'auth',
+        'verified'
+    ]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +71,11 @@ Route::resource('ejercicios', EjercicioController::class)
 */
 
 Route::resource('rutinas', RutinaController::class)
-    ->middleware(['auth', 'verified']);
+    ->middleware([
+        'auth',
+        'verified'
+    ]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +84,12 @@ Route::resource('rutinas', RutinaController::class)
 */
 
 Route::resource('clientes', ClienteController::class)
-    ->middleware(['auth', 'verified', 'role:Administrador,Entrenador']);
+    ->middleware([
+        'auth',
+        'verified',
+        'role:Administrador,Entrenador'
+    ]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +98,11 @@ Route::resource('clientes', ClienteController::class)
 */
 
 Route::resource('alimentacion', AlimentacionController::class)
-    ->middleware(['auth', 'verified']);
+    ->middleware([
+        'auth',
+        'verified'
+    ]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -84,8 +111,12 @@ Route::resource('alimentacion', AlimentacionController::class)
 */
 
 Route::get('/reportes', [ReporteController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('reportes.index');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -93,25 +124,60 @@ Route::get('/reportes', [ReporteController::class, 'index'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/rutinas/{rutina}/gestionar', [RutinaController::class, 'gestionar'])
-    ->middleware(['auth', 'verified'])
+Route::get(
+    '/rutinas/{rutina}/gestionar',
+    [RutinaController::class, 'gestionar']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('rutinas.gestionar');
 
-Route::post('/rutinas/{rutina}/agregar-ejercicio', [RutinaController::class, 'agregarEjercicio'])
-    ->middleware(['auth', 'verified'])
+
+Route::post(
+    '/rutinas/{rutina}/agregar-ejercicio',
+    [RutinaController::class, 'agregarEjercicio']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('rutinas.agregarEjercicio');
 
-Route::get('/rutinas/ejercicio/{rutinaEjercicio}/editar', [RutinaController::class, 'editarEjercicio'])
-    ->middleware(['auth', 'verified'])
+
+Route::get(
+    '/rutinas/ejercicio/{rutinaEjercicio}/editar',
+    [RutinaController::class, 'editarEjercicio']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('rutinas.editarEjercicio');
 
-Route::put('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 'actualizarEjercicio'])
-    ->middleware(['auth', 'verified'])
+
+Route::put(
+    '/rutinas/ejercicio/{rutinaEjercicio}',
+    [RutinaController::class, 'actualizarEjercicio']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('rutinas.actualizarEjercicio');
 
-Route::delete('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 'eliminarEjercicio'])
-    ->middleware(['auth', 'verified'])
+
+Route::delete(
+    '/rutinas/ejercicio/{rutinaEjercicio}',
+    [RutinaController::class, 'eliminarEjercicio']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('rutinas.eliminarEjercicio');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -119,13 +185,94 @@ Route::delete('/rutinas/ejercicio/{rutinaEjercicio}', [RutinaController::class, 
 |--------------------------------------------------------------------------
 */
 
-Route::get('/mis-rutinas', [ClienteRutinaController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+Route::get(
+    '/mis-rutinas',
+    [ClienteRutinaController::class, 'index']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('cliente.rutinas.index');
 
-Route::get('/mis-rutinas/{id}', [ClienteRutinaController::class, 'show'])
-    ->middleware(['auth', 'verified'])
+
+Route::get(
+    '/mis-rutinas/{id}',
+    [ClienteRutinaController::class, 'show']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
     ->name('cliente.rutinas.show');
+
+
+/*
+|--------------------------------------------------------------------------
+| MI ALIMENTACIÓN - ÁREA DEL CLIENTE
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/mi-alimentacion',
+    [ClienteAlimentacionController::class, 'index']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
+    ->name('cliente.alimentacion.index');
+
+
+Route::get(
+    '/mi-alimentacion/{id}',
+    [ClienteAlimentacionController::class, 'show']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
+    ->name('cliente.alimentacion.show');
+
+
+/*
+|--------------------------------------------------------------------------
+| MI PROGRESO - ÁREA DEL CLIENTE
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/mi-progreso',
+    [ClienteSeguimientoController::class, 'index']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
+    ->name('cliente.seguimiento.index');
+
+
+Route::get(
+    '/mi-progreso/registrar',
+    [ClienteSeguimientoController::class, 'create']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
+    ->name('cliente.seguimiento.create');
+
+
+Route::post(
+    '/mi-progreso',
+    [ClienteSeguimientoController::class, 'store']
+)
+    ->middleware([
+        'auth',
+        'verified'
+    ])
+    ->name('cliente.seguimiento.store');
+
 
 /*
 |--------------------------------------------------------------------------
